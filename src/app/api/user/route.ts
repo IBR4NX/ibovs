@@ -1,18 +1,18 @@
 "use server";
 import { NextRequest, NextResponse } from "next/server";
 // GET /api/users أو /api/users?email=test@example.com
-import { setAuthCookies, checkAuth, verifyJWT } from "@/lib/auth";
+import { setAuthCookies, getVerifiedPayload } from "@/lib/auth";
 import { login, signup, updateUser, deleteUserById, updatePassword } from "@/controllers/user.controller";
 import { getUserById } from "@/controllers/repositories/user.repository";
 import { redirect } from "next/navigation";
+import { verifyTokenUser } from "@/lib/auth";
 export async function GET(req: NextRequest) {
 	console.log("%%%%%%%%%% get user route %%%%%%%%%%");
 	const url = new URL(req.url);
 	const email = url.searchParams.get("email");
-	const token = await checkAuth();
-	const result = await verifyJWT(req);
-	if (!result.is)NextResponse.redirect(result.path)
-	const user = await getUserById(token?.id);
+	const tokenUser = await verifyTokenUser(req);
+	if (!tokenUser.is) NextResponse.redirect(tokenUser.path);
+	const user = await getUserById(tokenUser.id);
 	if (!user) return NextResponse.json(
 		{ message: "User not found" },
 		{ status: 404 }
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 			console.log(user);
 		}
 
-		return NextResponse.json({ message: "Login successful" }, { status: 200 });
+		return NextResponse.redirect(new URL('/', req.url));
 	} catch (error: any) {
 		console.error(error);
 		return NextResponse.json({ error: "C: " + error.message }, { status: 400 });
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
 // PUT /api/users/:id
 export async function PUT(req: NextRequest) {
-	const session = await checkAuth();
+	const session = await getVerifiedPayload();
 	const keysToKeep = ["action", "name", "email", "password", "new", "imgUrl"];
 	try {
 		const data = await req.json();

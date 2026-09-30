@@ -20,44 +20,53 @@ export default function apiFetch<T>(
     
   if (typeof setLoading !=='undefined')setLoading(true)
  // if (typeof id ==="undefined") id=toast.loading( messageLoading,  { position: "top-center" })
-  const fetchPromise =new Promise(async(resolve, reject)=>{ 
-  const controller = new AbortController();
-  const timer = setTimeout(() =>{
-    //controller.abort();
-    return reject("setTimeout 2000: ");
-   }, 30000);
-    const res = await fetch(checkURL(url), { signal: controller.signal,
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined,
-  })
-  clearTimeout(timer);
-      console.log(res)
-  if(!res.redirected){
-      const data = await res.json() ;
-      if (!res.ok || data?.error) {
-      console.log("Api Fetch Error:",data)
-        reject(data?.error || data?.message)
-      }
-     return resolve(data);
-  }
-      if(res?.redirected)window.location.href=res.url;
-  })
+  const fetchPromise: Promise<ApiResponse<T>> = new Promise(async (resolve, reject) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      //controller.abort();
+      return reject("setTimeout 2000: ");
+    }, 30000);
 
-  if (typeof fetchPromise !== "undefined" && typeof id !=="undefined") {
-     toast.promise(fetchPromise, {id,
+    const res = await fetch(checkURL(url), {
+      signal: controller.signal,
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    clearTimeout(timer);
+    console.log(res);
+
+    if (!res.redirected) {
+      const data = await res.json();
+      if (!res.ok || data?.error) {
+        console.log("Api Fetch Error:", data);
+        reject(data?.error || data?.message);
+        return;
+      }
+      return resolve(data as ApiResponse<T>);
+    }
+
+    if (res?.redirected) window.location.href = res.url;
+  });
+
+  // إذا تم تمرير toastMessages، نغلف الـ fetch بالـ toast.promise
+  if (fetchPromise) {
+    toast.promise(fetchPromise, {
+      id,
       loading: messageLoading,
-      success: (data:string) =>   data ,
+      success: (data: string) => data,
       error: (data: string) => data,
       position: "top-center"
     });
   }
-  
-  if (typeof setLoading !=='undefined') {
-    console.log(' if yes is that *** = *** ')
-    setTimeout(()=> setLoading(false),1000)
+
+  if (typeof setLoading !== 'undefined') {
+    console.log(' if yes is that *** = *** ');
+    setTimeout(() => setLoading(false), 1000);
   }
-  return  fetchPromise as Promise<ApiResponse<T>>;
+
+  return fetchPromise;
 }
 
 

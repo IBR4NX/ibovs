@@ -4,11 +4,10 @@ import { FormState } from '@/lib/definitions'
 import { redirect } from 'next/navigation';
 import { supabase } from '@/lib/envConfig';
 import { cache } from 'react'
-import { revalidatePath } from 'next/cache';
 import { findUserById, updateUser } from '@/controllers/repositories/user.repository';
-import { checkAuth } from '@/lib/auth';
+import { getVerifiedPayload } from '@/lib/auth';
 export const myProyfile = cache(async () => {
-  const session = await checkAuth();
+  const session = await getVerifiedPayload();
   const data = await findUserById(session?.id)
   if (data) {
     const user = {
@@ -26,7 +25,7 @@ export const myProyfile = cache(async () => {
 })
 
 export async function updateProfile(state: FormState, formData: FormData): Promise<FormState> {
-  const session = await checkAuth()
+  const session = await getVerifiedPayload()
 
   // formData.forEach((value, key) => {
   //   console.log(key, value)
@@ -47,7 +46,7 @@ export async function updateProfile(state: FormState, formData: FormData): Promi
 
 }
 export async function updateAvatar(state: FormState, formData: FormData) {
-  const session = await checkAuth()
+  const session = await getVerifiedPayload()
   const avatar = formData.get('avatar') as File
   console.log(avatar)
   if (avatar.size) {

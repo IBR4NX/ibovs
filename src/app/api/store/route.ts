@@ -1,11 +1,11 @@
 
 import { NextResponse, NextRequest} from "next/server"
 import { redirect } from "next/navigation";
-import { checkAuth } from "@/lib/auth/authUtils";
+import { getVerifiedPayload } from "@/lib/auth/authUtils";
 import { register,getStore,findAllStoreByOwner,updateStore } from "@/controllers/store.controller";
 import { setAuthCookies } from "@/lib/auth";
 export async function POST(req:Request) {
-    const session = await checkAuth();
+    const session = await getVerifiedPayload();
     const body = await req.json();
     const data={owner:session.id ,
     name:body.name ,
@@ -26,7 +26,7 @@ export async function POST(req:Request) {
 }
 
 export async function GET(req:Request) {
-  const session = await checkAuth();
+  const session = await getVerifiedPayload();
  // const user = await findUserById(session.id)
     const data= await findAllStoreByOwner(session?.id);
     //const data = dataStore[0]
@@ -34,7 +34,7 @@ export async function GET(req:Request) {
     return Response.json(data);
 }
 export async function PUT(req: NextRequest) {
-  const session = await checkAuth();
+  const session = await getVerifiedPayload();
   const keysToKeep = ["name", "bio", "slug", "imgUrl"];
   const data = await req.json();
   const filteredUser = Object.fromEntries(
