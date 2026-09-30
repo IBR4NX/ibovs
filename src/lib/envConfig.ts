@@ -1,8 +1,4 @@
 
-import { loadEnvConfig } from '@next/env'
-const projectDir = process.cwd()
-loadEnvConfig(projectDir)
-
  const environment=process.env.NODE_ENV;
  const PORT=process.env.PORT;
  const DB_URL=process.env.DATABASE_URL;
