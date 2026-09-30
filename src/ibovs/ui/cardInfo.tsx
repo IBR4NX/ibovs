@@ -5,11 +5,32 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import ImageForm from "@/ui/image-form";
-import { DialogForm } from "@/components/form";
-import { DialogPassword } from "@/components/dialog";
+import ImageForm from "@/components/shared/form/image-form";
+import { DialogForm } from "@/components/shared/form";
+import { DialogPassword } from "@/components/shared/dialog";
 import useSWR from "swr";
-const Profile = memo(function Profile  ({ data, url }) {
+
+type ProfileItem = {
+	key: string | number;
+	name: string;
+	value: string;
+};
+
+type ProfileData = {
+	imgUrl?: string;
+	name?: string;
+	email?: string;
+	role?: string;
+	data?: ProfileItem[];
+	edit?: unknown;
+};
+
+type ProfileProps = {
+	data?: ProfileData;
+	url: string;
+};
+
+const Profile = memo(function Profile({ data, url }: ProfileProps) {
 	const [open, setOpen] = useState(false);
 	const [openPassword, setOpenPassword] = useState(false);
 	if (!data) return null;
@@ -36,7 +57,7 @@ const Profile = memo(function Profile  ({ data, url }) {
 
 				<Separator />
 				<CardContent className='space-y-4 pt-6'>
-					{data.data.map(i => (
+					{data.data?.map(i => (
 						<Item key={i.key} className='flex justify-between'>
 							<ItemMedia>{i.name}</ItemMedia>
 							<ItemContent>
@@ -50,8 +71,8 @@ const Profile = memo(function Profile  ({ data, url }) {
 					<Button className='' variant='outline' onClick={() => setOpen(!open)}>
 						Edit Informtion
 					</Button>
-					<DialogForm data={data.edit} open={open} url={url} children={undefined} onOpenChange={function (open: boolean): void {
-							throw new Error("Function not implemented.");
+					<DialogForm data={data.edit} open={open} setOpen={setOpen} url={url} children={undefined} onOpenChange={function (open: boolean): void {
+							// throw new Error("Function not implemented.");
 						} } />
 					<DialogPassword />
 					</div>
@@ -59,6 +80,6 @@ const Profile = memo(function Profile  ({ data, url }) {
 			</Card>
 		</>
 	);
-};
+}
 )
 export default Profile;

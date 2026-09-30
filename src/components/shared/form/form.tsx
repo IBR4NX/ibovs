@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/input-group";
 import { Button } from "@/components/ui/button";
 import apiFetch from "@/utils/api";
-import { useAlertApi } from "@/components/AlertProvider"
+import { useAlertApi } from "@/components/provider/AlertProvider"
 export default function Form({ data ,url,method }) {
   const [form, setForm] = useState({});
   const { alertApi } = useAlertApi()

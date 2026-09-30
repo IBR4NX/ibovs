@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState, useMemo } from "react";
+import { useEffect, useId, useState, useMemo, use } from "react";
 import CardInfo from "@/ibovs/ui/cardInfo";
 type User = {
 	name: string;
@@ -20,7 +20,7 @@ export default function AccountPage() {
 				    return convertData(user);
 						  }, [user]);
 	console.log("uuid: ",now)
-	console.log(now.toString())
+	console.log("data: ",user)
 
 	return (
 		<DialogProvider>

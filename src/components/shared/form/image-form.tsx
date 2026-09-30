@@ -12,11 +12,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Loader2Icon } from "lucide-react";
-import { uploadForm } from "@/utils/uploadForm";
-import { useDialogApi } from "./dialogProvider";
+import { uploadForm } from "./uploadForm";
+import { useDialogApi } from "../../../ibovs/ui/dialogProvider";
 interface Props {
   children: React.ReactNode;
-  url: string;
+  url?: string;
   title?: string;
   description?: string;
   avatar:string

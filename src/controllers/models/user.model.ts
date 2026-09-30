@@ -31,7 +31,7 @@ const schema = new mongoose.Schema<IUser>(
     password: { type: String, required: [true," password is required"],
       minLength: [6, "Password must be at least 6 characters long"],
     },
-    imgUrl:{type: String,default:"http://localhost:3000/favicons/favicon-96x96.png"
+    imgUrl:{type: String,default:"/uploads/users/6abc3e11ea233bfe6ed9524a.jpg"
     },
     storeId: [{ 
     type: mongoose.Schema.Types.ObjectId, 

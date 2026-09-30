@@ -19,7 +19,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         refreshInterval:50000,
         revalidateOnFocus: false,
         fallback:{
-          '/usfer':{name:"",email:"",imgUrl:""}
+          '/user':{name:"",email:"",imgUrl:""}
         }
       }}
     >

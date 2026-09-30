@@ -52,11 +52,17 @@ export default function apiFetch<T>(
 
   // إذا تم تمرير toastMessages، نغلف الـ fetch بالـ toast.promise
   if (fetchPromise) {
-    toast.promise(fetchPromise, {
+    toast.promise<ApiResponse<T>>(fetchPromise, {
       id,
       loading: messageLoading,
-      success: (data: string) => data,
-      error: (data: string) => data,
+      success: (data: ApiResponse<T>) => data?.message ?? 'تمت العملية بنجاح',
+      error: (error: unknown) => {
+        if (typeof error === 'string') return error;
+        if (error && typeof error === 'object' && 'message' in error) {
+          return String((error as { message?: string }).message ?? 'حدث خطأ غير متوقع');
+        }
+        return 'حدث خطأ غير متوقع';
+      },
       position: "top-center"
     });
   }

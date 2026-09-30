@@ -11,15 +11,15 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
 
 	useMotionValueEvent(scrollY, "change", current => {
 		const previous = scrollY.getPrevious() ?? 0;
-		console.log(current - previous);
+		// console.log(current - previous);
 		if (current > previous && current > 500) {
 			setHidden(true);
 		} else if (hidden) {
 			setHidden(false);
 		}
-		if (!isTop && current < 10) {
+		if (!isTop && current < 20) {
 			setIsTop(true);
-		} else if (isTop && current > 10) {
+		} else if (isTop && current > 20) {
 			setIsTop(false);
 		}
 	});
@@ -28,7 +28,7 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
 		<div className=" relative ab min-h-14">
 			<motion.header
 				className={cn(
-					"bg-card fixed z-20 top-0 inset-x-0 flex shrink-0 items-center gap-2 border-b  p-2   ",
+					"bg-card fixed w-full z-20 top-0 inset-x-0 flex shrink-0 items-center gap-2 border-b  p-2 px-4 transition-all duration-300",
 					className,
 					!isTop && "drop-shadow-md/25",
 					"drop-shadow-foreground",

@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 interface Props {
   children: ReactNode;
   open: boolean;
+  setOpen: (open: boolean) => void;
   onOpenChange: (open: boolean) => void;
   props?: ComponentProps<typeof Dialog>;
   data:any;
@@ -22,7 +23,7 @@ interface Props {
 }
 
 import Form from "./form";
-export function DialogForm({ data, open, onOpenChange, url, ...props }: Props) {
+export function DialogForm({ data, open, setOpen, onOpenChange, url, ...props }: Props) {
   const transitions = useTransition(open, {
     from: { opacity: 0, transform: "scale(0.8) translateY(-100px)" },
     enter: { opacity: 1, transform: "scale(1) translateY(0px)" },
@@ -48,7 +49,7 @@ export function DialogForm({ data, open, onOpenChange, url, ...props }: Props) {
                 <DialogFooter>
                   <div className=' grid grid-cols-7 gap-4 pt-2'>
                     <DialogClose className='col-span-3 ' asChild>
-                      <Button variant='outline' className=''>
+                      <Button onClick={() => setOpen(false)} variant='outline' className=''>
                         Cancel
                       </Button>
                     </DialogClose>

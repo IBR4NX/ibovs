@@ -1,5 +1,5 @@
 // ./src/app/layout.tsx 
-import "./globals.css";
+import "@/app/globals.css";
 import { ReactNode } from 'react';
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner"
