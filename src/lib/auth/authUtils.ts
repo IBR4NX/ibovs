@@ -4,10 +4,9 @@ import {
 	signToken,
 	setAuthCookies,
 	getAuthCookies,
-	TokenConfig,
-	IUser,
 	defaultTokens,
 } from "@/lib/auth/authCookies";
+import {TokenConfig, IUser} from "./interface"
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Types } from "mongoose";
