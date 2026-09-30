@@ -16,9 +16,9 @@ export default function AccountPage() {
 	const con = useSWRConfig();
 	const now = new Date()
 	const data = useMemo(() => {
-		    console.log("calculate");
-				    return convertData(user);
-						  }, [user]);
+		console.log("calculate");
+		return user ? convertData(user) ?? undefined : undefined;
+	}, [user]);
 	console.log("uuid: ",now)
 	console.log("data: ",user)
 

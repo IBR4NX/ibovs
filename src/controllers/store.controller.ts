@@ -3,7 +3,7 @@ import 'server-only'
 import  {StoreModel as storeModel, IStore} from "@/controllers/models/store.model";
 import  {  userModel} from "@/controllers/models/user.model";
 import { createStore, findStoreByOwner,findStoreById, findAllStoreByOwner,updateStore } from '@/controllers/repositories/store.repository'
-import { getVerifiedPayload } from '@/lib/auth/authUtils';
+import { getVerifiedPayload } from '@/lib/auth/authCookies';
 export async function checkSlug(slugCheck:any) {
   const slug = slugCheck.toLowerCase().trim();
   const slugExists = await storeModel.exists({ slug });
@@ -41,7 +41,7 @@ export async function getAllStores() {
 }
 export async function loginOwner() {
   const session = await getVerifiedPayload();
-  const store = await findStoreByOwner(sessione?.id);
+  const store = await findStoreByOwner(session?.id);
   // const result = await setAuthStore(store);
   // redirect("/dashboard");
   return store

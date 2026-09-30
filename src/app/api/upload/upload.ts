@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import fs from "fs";
 import path from "path";
 import formidable from "formidable";
 
 export const config = {
   api: {
-    bodyParser: false, // مهم لـ ملفات الـ FormData
+    bodyParser: false,
   },
 };
 
@@ -14,17 +13,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const form = new formidable.IncomingForm();
-  form.uploadDir = path.join(process.cwd(), "/public/uploads"); // مجلد التخزين
-  form.keepExtensions = true;
+  const form = formidable({
+    uploadDir: path.join(process.cwd(), "public/uploads"),
+    keepExtensions: true,
+    multiples: false,
+  });
 
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Upload failed" });
+  try {
+    const [, files] = await form.parse(req);
+    const file = files.file?.[0] ?? files.file;
+
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded" });
     }
 
-    const file = files.file as formidable.File;
-    return res.status(200).json({ filename: file.newFilename, path: `/uploads/${file.newFilename}` });
-  });
+    const fileInfo = file as formidable.File;
+
+    return res.status(200).json({
+      filename: fileInfo.newFilename,
+      path: `/uploads/${fileInfo.newFilename}`,
+    });
+  } catch (error: any) {
+    console.error(error);
+    return res.status(500).json({ message: "Upload failed" });
+  }
 }

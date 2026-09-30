@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { setAuthCookies, getVerifiedPayload } from "@/lib/auth";
 import { login, signup, updateUser, deleteUserById, updatePassword } from "@/controllers/user.controller";
 import { getUserById } from "@/controllers/repositories/user.repository";
-import { redirect } from "next/navigation";
 import { verifyTokenUser } from "@/lib/auth";
 export async function GET(req: NextRequest) {
 	console.log("%%%%%%%%%% get user route %%%%%%%%%%");
@@ -71,19 +70,3 @@ export async function PUT(req: NextRequest) {
 	}
 }
 
-// DELETE /api/users/:id
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-	const deleted = await deleteUserById(params.id);
-	if (!deleted) return NextResponse.json({ error: "User not found" }, { status: 404 });
-	return NextResponse.json(deleted);
-}
-
-// PATCH /api/users/:id/toggle
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-	const user = await deleteUserById(params.id);
-	if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
-	return NextResponse.json({
-		message: `User is now ${user.isActive ? "active" : "inactive"}`,
-		user,
-	});
-}

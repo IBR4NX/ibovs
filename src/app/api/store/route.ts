@@ -1,13 +1,14 @@
 
 import { NextResponse, NextRequest} from "next/server"
 import { redirect } from "next/navigation";
-import { getVerifiedPayload } from "@/lib/auth/authUtils";
+import { Types } from "mongoose";
+import { getVerifiedPayload } from "@/lib/auth";
 import { register,getStore,findAllStoreByOwner,updateStore } from "@/controllers/store.controller";
 import { setAuthCookies } from "@/lib/auth";
 export async function POST(req:Request) {
     const session = await getVerifiedPayload();
     const body = await req.json();
-    const data={owner:session.id ,
+    const data={owner: new Types.ObjectId(session.id),
     name:body.name ,
     slug:body.slug ,
     bio:body.description };
