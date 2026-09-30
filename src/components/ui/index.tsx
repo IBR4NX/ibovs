@@ -1,0 +1,19 @@
+// src/components/ui/index.ts
+//  تسهيل عمليه الاستيراد
+export * from "./alert-dialog";
+export * from './badge'
+export * from "./button";
+export * from "./card";
+export * from "./combobox";
+export * from "./direction";
+export * from "./dropdown-menu";
+export * from "./field";
+export * from "./input-group";
+export * from "./input";
+export * from "./label";
+export * from "./select";
+export * from "./separator";
+export * from "./textarea";
+export * from "./alert";
+
+
