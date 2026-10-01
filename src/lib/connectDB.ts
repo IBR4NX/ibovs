@@ -1,26 +1,36 @@
-'use server'
-import mongoose from 'mongoose'
-import { DB_URL } from './envConfig';
-if (!DB_URL) {
-throw new Error("Please define MONGODB_URI");
-}
-let cached = (global as any).mongoose;
+'use server';
 
-if (!cached) {
-cached = (global as any).mongoose = { conn: null, promise: null };
+import mongoose from 'mongoose';
+import { DB_URL } from './envConfig';
+
+if (!DB_URL) {
+    throw new Error('Please define MONGODB_URI');
 }
 
 export async function connectDB() {
-console.log("createConnection DB mongoose");
-if (cached.conn) return cached.conn;
+    console.log('Connecting to MongoDB...');
 
-if (!cached.promise) {
-cached.promise = mongoose.connect(DB_URL as string).then((mongoose) => mongoose);
-}
+    const connection = await mongoose.connect(DB_URL as string);
 
-cached.conn = await cached.promise;
-return cached.conn;
+    return connection;
 }
+// let cached = (global as any).mongoose;
+
+// if (!cached) {
+// cached = (global as any).mongoose = { conn: null, promise: null };
+// }
+
+// export async function connectDB() {
+// console.log("createConnection DB mongoose");
+// if (cached.conn) return cached.conn;
+
+// if (!cached.promise) {
+// cached.promise = mongoose.connect(DB_URL as string).then((mongoose) => mongoose);
+// }
+
+// cached.conn = await cached.promise;
+// return cached.conn;
+// }
 //export const connDB=mongoose.createConnection('mongodb://127.0.0.1:27017/' as string);
 
 // /hexport async function connectDB() {

@@ -9,24 +9,20 @@ import ImageForm from "@/components/shared/form/image-form";
 import { DialogForm } from "@/components/shared/form";
 import { DialogPassword } from "@/components/shared/dialog";
 import useSWR from "swr";
+import { FormItem } from "@/components/shared/form";
 
-type ProfileItem = {
-	key: string | number;
-	name: string;
-	value: string;
-};
 
 type ProfileData = {
 	imgUrl?: string;
 	name?: string;
 	email?: string;
 	role?: string;
-	data?: ProfileItem[];
-	edit?: unknown;
+	data?: FormItem[];
+	edit: FormItem[];
 };
 
 type ProfileProps = {
-	data?: ProfileData;
+	data: ProfileData;
 	url: string;
 };
 
@@ -71,7 +67,7 @@ const Profile = memo(function Profile({ data, url }: ProfileProps) {
 					<Button className='' variant='outline' onClick={() => setOpen(!open)}>
 						Edit Informtion
 					</Button>
-					<DialogForm data={data.edit} open={open} setOpen={setOpen} url={url} children={undefined} onOpenChange={function (open: boolean): void {
+					<DialogForm data={data.edit} open={open} setOpen={setOpen} url={url}  onOpenChange={function (open: boolean): void {
 							// throw new Error("Function not implemented.");
 						} } />
 					<DialogPassword />

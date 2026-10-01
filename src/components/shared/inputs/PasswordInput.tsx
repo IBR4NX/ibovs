@@ -16,7 +16,7 @@ type PasswordInputProps = React.InputHTMLAttributes<HTMLInputElement> &{
   description?: string;
   defaultValue?: string;
   value?: string;
-  onChange?: (e: any) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 };
 

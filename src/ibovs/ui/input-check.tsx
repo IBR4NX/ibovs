@@ -7,8 +7,9 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
-import { Spinner } from "@/components/ui/spinner"
-type InputCheckProps = {
+import { Spinner } from "@/components/ui/spinner";
+
+type InputCheckProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   name: string;
   endpoint: string; // مثال: /api/store/check

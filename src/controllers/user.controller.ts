@@ -5,6 +5,7 @@
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
 import { supabase } from '@/lib/envConfig';
+import { getFailed } from '@/services/Helper';
 // GET /api/users
 export async function getUsers() {
   const users = await findAllUsers();
@@ -14,7 +15,7 @@ export async function getUsers() {
 // GET /api/users/:id
 export async function getUser(id: string) {
   const user = await findUserById(id);
-  if (!user) return 'User not found' ;
+  if (!user) return getFailed(false, undefined, 'User not found');
   return (user);
 }
 getUser
@@ -32,12 +33,12 @@ export async function signup(name:string,email:string, password:string) {
 
 export async function login(email:string, password:string) {
   const existingUser = await findUserByEmail(email);
-  if (!existingUser)throw new Error(' email is not exists');
+  if (!existingUser || !existingUser.password)throw new Error(' email is not exists');
   console.log(existingUser);
   const passwordMatch = await bcrypt.compare(password, existingUser.password);
   if (!passwordMatch)throw new Error('Invalid email or password. Please try again.');
   
-  console.log("Login successful",existingUser.id);
+  console.log("Login successful",existingUser._id);
   return existingUser;
 }
 export async function updatePassword(id:string,data:{password:string,new:string}){

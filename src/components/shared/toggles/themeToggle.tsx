@@ -65,24 +65,30 @@ export const ModeToggle = () => {
 };
 
 
-const colors = ["default",'blue', 'yellow', 'red'];
+type ColorTheme = 'blue' | 'yellow' | 'red';
+const colors: ColorTheme[] = ['blue', 'yellow', 'red'];
+
+const isColorTheme = (value: string): value is ColorTheme =>
+	colors.includes(value as ColorTheme);
+
 export function ColorToggle() {
 	const [loading, setLoading] = React.useState(true);
-	const [color, setColor] = React.useState<'blue' | 'yellow' | 'red'>('blue');
+	const [color, setColor] = React.useState<ColorTheme>('blue');
 	React.useEffect(() => {
 		setLoading(false);
-		const color = localStorage.getItem('color');
-		if (color) {
-			setColor(color);
-			document.documentElement.classList.add(`theme-${color}`);
+		const storedColor = localStorage.getItem('color');
+		if (storedColor && isColorTheme(storedColor)) {
+			setColor(storedColor);
+			document.documentElement.classList.add(`theme-${storedColor}`);
 		}
 	}, []);
 	if (loading) return null;
-	function setTheme(theme: string) {
+	function setTheme(theme: ColorTheme) {
 		const html = document.documentElement;
 		html.classList.remove('theme-blue', 'theme-yellow', 'theme-red');
 		html.classList.add(`theme-${theme}`);
 		localStorage.setItem('color', theme);
+		setColor(theme);
 	}
 	return (
 		<DropdownMenu>

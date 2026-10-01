@@ -15,7 +15,7 @@ interface configProps {
 	url: string;
 	method: Method;
 	action?: string;
-	body?: any;
+	body?: BodyInit;
 }
 export function checkURL(url:string) {
   return url.startsWith("/api/")? 
@@ -23,7 +23,7 @@ export function checkURL(url:string) {
   "/api" + url:"/api/" + url
 }
 type DialogContextType = {
-	dialogApi: (url: string, method?: Method, body?:any, api?: apiProps) => void;
+	dialogApi: (url: string, method?: Method, body?:BodyInit, api?: apiProps) => void;
 };
 const DialogContext = createContext<DialogContextType | null>(null);
 
@@ -35,7 +35,7 @@ export function DialogProvider({ children }: { children: React.ReactNode }) {
 
 	const [config, setConfig] = useState<configProps | null>(null);
 
-	const dialogApi = (url: string, method: Method = 'GET', body?: object, api?: apiProps) => {
+	const dialogApi = (url: string, method: Method = 'GET', body?: BodyInit, api?: apiProps) => {
 		if (api) {
 			setConfig({ url: api.url ?? url, method: api.method ?? method, action: api.action, body });
 		} else {
@@ -66,10 +66,10 @@ export function DialogProvider({ children }: { children: React.ReactNode }) {
 				setMessage(data?.message || 'Success');
 
 				setTimeout(() => setOpen(false), 3000);
-			} catch (err: any) {
+			} catch (err: unknown) {
 				setTimeout(() => setOpen(false), 5000);
 				console.error(err);
-				setError(err.message || 'Unexpected error');
+				setError((err as Error).message || 'Unexpected error');
 			} finally {
 				setLoading(false);
 			}

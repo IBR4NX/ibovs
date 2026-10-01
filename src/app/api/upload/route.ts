@@ -11,10 +11,11 @@ export async function POST(req: NextRequest) {
   const data = await req.formData(); // متاح في Next.js 14+
   const file = data.get("file") as File;
   const token = await getVerifiedPayload();
-  const upfile= await upload(file,token.id,"/users")
+  const upfile= await upload(file,token._id,"/users")
   console.log(upfile);
   if(upfile){
-    const result = await updateUser(token.id,{imgUrl:upfile});
+    const result = await updateUser(token._id,{imgUrl:upfile});
+    if(!result) return NextResponse.json({message:"noooooo"})
    const data= result.toJSON()
    console.log(data);
   return NextResponse.json({ path: upfile,data });

@@ -25,24 +25,29 @@ export default async function proxy(req: NextRequest) {
     const isProtectedRoute = matchesRoute(path, PROTECTED_ROUTES);
     const isPublicRoute = matchesRoute(path, PUBLIC_ROUTES);
 
-    const auth = await verifyAuthState(path);    
-    log('auth:', auth ? { id: auth.id, role: auth.role, expiresAt: auth.expiresAt } : null);
+    const auth = await verifyAuthState(path);  
+    console.log(colors.bgWhite('  '), colors.green(' auth state → '), auth);  
+    if (!auth.is) {
+        log(colors.red('auth failed'), '→', auth);
+    return NextResponse.next();
+    }
+    log('auth:', auth ? { id: auth._id, role: auth.role, expiresAt: auth.expiresAt } : null);
     log('flags:', { path, isProtectedRoute, isPublicRoute });
 
     // --- المسارات العامة (login/register/signup) ---
     if (isPublicRoute) {
-        if (!auth?.id) return NextResponse.next();
+        if (!auth?._id) return NextResponse.next();
         // المستخدم مسجل بالفعل → لا داعي لصفحات الدخول
         return NextResponse.redirect(new URL('/', req.nextUrl));
     }
 
     // --- المسارات المحمية ---
-    if (isProtectedRoute && !auth?.id) {
+    if (isProtectedRoute && !auth?._id) {
         return NextResponse.redirect(new URL('/login', req.nextUrl));
     }
 
     // --- admin فقط ---
-    if (path.startsWith('/admin') && auth?.id !== ADMIN_ID) {
+    if (path.startsWith('/admin') && auth?._id !== ADMIN_ID) {
         return NextResponse.redirect(new URL('/', req.nextUrl));
     }
 

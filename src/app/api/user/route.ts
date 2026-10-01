@@ -5,20 +5,27 @@ import { setAuthCookies, getVerifiedPayload } from "@/lib/auth";
 import { login, signup, updateUser, deleteUserById, updatePassword } from "@/controllers/user.controller";
 import { getUserById } from "@/controllers/repositories/user.repository";
 import { verifyTokenUser } from "@/lib/auth";
+import { JWTIbovs } from "@/lib/auth/interface";
 export async function GET(req: NextRequest) {
 	console.log("%%%%%%%%%% get user route %%%%%%%%%%");
 	const url = new URL(req.url);
 	const email = url.searchParams.get("email");
 	const tokenUser = await verifyTokenUser(req);
-	if (!tokenUser.is) NextResponse.redirect(tokenUser.path);
-	const user = await getUserById(tokenUser.id);
-	if (!user) return NextResponse.json(
-		{ message: "User not found" },
-		{ status: 404 }
-	);
-	const data = user.toJSON();
-	delete data.storeId;
-	return NextResponse.json(data);
+
+	if (!tokenUser.is) {
+		return NextResponse.redirect(String(tokenUser.path));
+	}
+	if (tokenUser.is) {
+		const user = await getUserById(tokenUser._id);
+		if (!user) return NextResponse.json(
+			{ message: "User not found" },
+			{ status: 404 }
+		);
+		const data = user.toJSON();
+		delete data.storeId;
+		return NextResponse.json(data);
+	}
+	return NextResponse.json({ message: "User not found" }, { status: 404 });
 
 }
 
@@ -43,8 +50,9 @@ export async function POST(req: NextRequest) {
 		}
 
 		return NextResponse.redirect(new URL('/', req.url));
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error(error);
+		if (error instanceof Error)
 		return NextResponse.json({ error: "C: " + error.message }, { status: 400 });
 	}
 	console.log("redirect");
@@ -59,14 +67,16 @@ export async function PUT(req: NextRequest) {
 		const data = await req.json();
 		const fltrUser = Object.fromEntries(Object.entries(data).filter(([key]) => keysToKeep.includes(key)));
 		if (fltrUser.action === "password") {
-			const upUser = await updatePassword(session.id, data);
+			const upUser = await updatePassword(session._id, data);
 		} else {
-			const updated = await updateUser(session.id, fltrUser);
+			const updated = await updateUser(session._id, fltrUser);
 		}
 		return NextResponse.json({ message: "successful updated" });
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error(error);
+		if (error instanceof Error) 
 		return NextResponse.json({ error: "C: " + error.message }, { status: 400 });
 	}
+	return NextResponse.json({ error: "Unknown error" }, { status: 400 });
 }
 

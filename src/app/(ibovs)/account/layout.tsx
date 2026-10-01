@@ -9,11 +9,12 @@ export default function AccountLayout({
 }) {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    setLoading(true);
-    console.log("setLoading stop");
-  }, []);
-  console.log("render");
+    if (typeof window !== "undefined") {
+      console.log("setLoading stop");
+    }
+  }, [0]);
   if (!loading) return null;
+  console.log("render");
   console.log("after loading");
   return (
     <>

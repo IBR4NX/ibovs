@@ -22,9 +22,9 @@ import { Label } from "@/components/ui/label";
 import React, { useState, useOptimistic, startTransition } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateAvatar, updateProfile } from "@/app/api/profile";
-import { Spinner } from "../components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { useActionState } from "react";
-import ImgUpload from "@/ui/imgUpload";
+import ImgUpload from "@/ibovs/ui/imgUpload";
 interface EditProfilePorps {
   user?: { name: string; email: string; imgUrl?: string };
   children: React.ReactNode;

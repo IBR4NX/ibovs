@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       filename: fileInfo.newFilename,
       path: `/uploads/${fileInfo.newFilename}`,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
     return res.status(500).json({ message: "Upload failed" });
   }

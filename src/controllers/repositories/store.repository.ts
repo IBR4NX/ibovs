@@ -13,14 +13,15 @@ export async function createStore(data:object) {
   return {error:null, store}
 }
 // Bring a user by email : Promise<IUser | null>
-export async function findStoreByOwner(owner: string) {
+export async function findStoreByOwner(owner?: string) {
+  if (!owner) return null;
   await connectDB()
   const user = await StoreModel.findOne({ owner: owner.toLowerCase() }).lean();
   return user
-  //user.id=user._id.toString()
 }
 
-export async function findStoreById(id:string) {
+export async function findStoreById(id?:string) {
+  if (!id) return null;
   await connectDB()
   const store= await StoreModel.findById(id).populate('owner');
   return store

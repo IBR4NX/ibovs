@@ -1,10 +1,11 @@
 import { cn } from "@/shadcn/utils"
-import { RiLoaderLine } from "@remixicon/react"
+import a, { RiLoaderLine } from "@remixicon/react"
 import { ComponentProps } from "react"
-function Spinner({ className, ...props }:ComponentProps<"svg">) {
+export function Spinner({ className, ...props }:ComponentProps<"svg">) {
+
+                   
   return (
-    <RiLoaderLine role="status" aria-label="Loading" className={cn("size-4 animate-spin", className)} {...(props as any)} />
+    <RiLoaderLine role="status" aria-label="Loading" className={cn("size-4 animate-spin", className)}/>
   )
 }
 
-export { Spinner }

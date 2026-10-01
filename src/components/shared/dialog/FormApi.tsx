@@ -1,28 +1,30 @@
 "use client";
-import  { useState,ChangeEvent } from "react";
-import { Button } from "@/components/ui/button";
-import apiFetch from "@/utils/api";
+import { useState, ChangeEvent, FormEvent, ReactNode } from "react";
 const wait = () => new Promise(resolve => setTimeout(resolve, 5000));
-import { useAlertApi } from "@/components/provider/AlertProvider"
+import { useAlertApi } from "@/components/provider/AlertProvider";
+import type { Method } from "@/lib/types";
+
 interface Props {
-  children: React.ReactNode;
-  url:string;
-  method:string;
+  children: ReactNode;
+  url: string;
+  method: Method;
 }
-export default function FormApi({url, method, children }:Props) {
-  const [form, setForm] = useState({});
-  const { alertApi } = useAlertApi()
-  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+
+export default function FormApi({ url, method, children }: Props) {
+  const [form, setForm] = useState<Record<string, string>>({});
+  const { alertApi } = useAlertApi();
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(e.currentTarget);
-    wait().then((result) => {
-      console.log("begin wait ");
-    alertApi(`/api${url}`, method, form)
-    })
-  }
+    await wait();
+    console.log("begin wait ");
+    alertApi(`/api${url}`, method, form);
+  };
   return (
     <>
       <form

@@ -70,10 +70,10 @@ export function AlertProvider({ children }: { children: React.ReactNode }) {
 				setMessage(data?.message || 'Success');
 
 				setTimeout(() => setOpen(false), 3000);
-			} catch (err: any) {
+			} catch (err: unknown) {
 				setTimeout(() => setOpen(false), 5000);
 				console.error(err);
-				setError(err.message || 'Unexpected error');
+				setError((err as Error).message || 'Unexpected error');
 			} finally {
 				setLoading(false);
 			}

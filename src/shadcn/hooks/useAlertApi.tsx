@@ -57,8 +57,8 @@ export function useAlertApi() {
           throw new Error(data?.message || "Request failed")
 
         setMessage(data?.message || "Success")
-      } catch (err: any) {
-        setError(err.message || "Unexpected error")
+      } catch (err: unknown) {
+        setError((err as Error).message || "Unexpected error")
       } finally {
         setLoading(false)
       }

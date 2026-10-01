@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, ComponentProps, ReactNode } from "react";
 import { useTransition, animated, config } from "@react-spring/web";
+import Form, { FormItem } from "./form";
 const wait = () => new Promise(resolve => setTimeout(resolve, 5000));
 import {
   Dialog,
@@ -13,17 +14,16 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
   open: boolean;
   setOpen: (open: boolean) => void;
   onOpenChange: (open: boolean) => void;
   props?: ComponentProps<typeof Dialog>;
-  data:any;
+  data: FormItem[];
   url:string;
 }
 
-import Form from "./form";
-export function DialogForm({ data, open, setOpen, onOpenChange, url, ...props }: Props) {
+export function DialogForm({ data, open, setOpen, onOpenChange, url,children = <></>, ...props }: Props) {
   const transitions = useTransition(open, {
     from: { opacity: 0, transform: "scale(0.8) translateY(-100px)" },
     enter: { opacity: 1, transform: "scale(1) translateY(0px)" },

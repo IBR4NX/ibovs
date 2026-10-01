@@ -7,7 +7,7 @@ export interface IUser extends Document {
   role: string;
   name?: string;
   email?: string;
-  password?: string;
+  password: string;
   status?: string;
   imgUrl?: string;
   isActive?: boolean;
@@ -46,15 +46,15 @@ const schema = new mongoose.Schema<IUser>(
 );
 schema.set("toJSON", {
   transform: function (_, ret) {
-    const { _id,id,isActive,password, ...object }= ret
+    const { id,isActive,password, ...object }= ret
     // console.log(object);
     return object;
   },
 });
 schema.set("toObject", {
   transform: function (_, ret) {
-    const { _id,createdAt, updatedAt, ...object }= ret
-    object.id = _id.toString();
+    const { createdAt, updatedAt, ...object }= ret
+    // object._id = _id.toString();
     // console.log(object);
     return object;
   },

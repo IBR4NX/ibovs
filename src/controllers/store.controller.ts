@@ -4,7 +4,7 @@ import  {StoreModel as storeModel, IStore} from "@/controllers/models/store.mode
 import  {  userModel} from "@/controllers/models/user.model";
 import { createStore, findStoreByOwner,findStoreById, findAllStoreByOwner,updateStore } from '@/controllers/repositories/store.repository'
 import { getVerifiedPayload } from '@/lib/auth/authCookies';
-export async function checkSlug(slugCheck:any) {
+export async function checkSlug(slugCheck:string) {
   const slug = slugCheck.toLowerCase().trim();
   const slugExists = await storeModel.exists({ slug });
   return slugExists
@@ -34,14 +34,14 @@ export async function register(data:IStore) {
 
 export async function getAllStores() {
   const session = await getVerifiedPayload();
-  const store = await findStoreById(session.storeId)
-  const stores = await findAllStoreByOwner(session.id)
+  const store = await findStoreById(session?.storeId)
+  const stores = await findAllStoreByOwner(session._id)
   // const data= {store:await serialize(store),stores:await serialize(stores)}
   return {stores,store}
 }
 export async function loginOwner() {
   const session = await getVerifiedPayload();
-  const store = await findStoreByOwner(session?.id);
+  const store = await findStoreByOwner(session?._id);
   // const result = await setAuthStore(store);
   // redirect("/dashboard");
   return store

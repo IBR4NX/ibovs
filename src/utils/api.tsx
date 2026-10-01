@@ -1,6 +1,8 @@
 // src/lib/api.ts
 "use client"
 import { toast } from 'sonner';
+import type { Method } from '@/lib/types';
+
 export type ApiResponse<T> = {
   success: boolean;
   data?: T;
@@ -13,7 +15,7 @@ const messageLoading=<div className="flex justify-between w-full min-w-72">
 import React from "react"
 export default function apiFetch<T>(
   url: string,
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
+  method: Method = 'GET',
   body: object,
   setLoading?: React.Dispatch<React.SetStateAction<boolean>>
   ): Promise<ApiResponse<T>> {

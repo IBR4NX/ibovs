@@ -17,7 +17,7 @@ export default function AccountPage() {
 	const now = new Date()
 	const data = useMemo(() => {
 		console.log("calculate");
-		return user ? convertData(user) ?? undefined : undefined;
+		return user ? convertData(user) ?? {} : {};
 	}, [user]);
 	console.log("uuid: ",now)
 	console.log("data: ",user)
@@ -25,11 +25,11 @@ export default function AccountPage() {
 	return (
 		<DialogProvider>
 		<div className='max-w-2xl mx-auto py-10 px-4'>
-			{user ? (
+			{/* {user ? (
 				<CardInfo data={data} url='/user' />
 			) : (
 				<p className='text-muted-foreground'>No user data found.</p>
-			)}
+			)} */}
 		</div>
 		</DialogProvider>
 	);

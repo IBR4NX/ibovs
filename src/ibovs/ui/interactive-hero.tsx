@@ -1,12 +1,12 @@
 "use client";
 // import { InteractiveGridBackground } from "@/components/animation/interactive-grid-background";
-import GlowingButton from "@/ui/glow-border-button";
-import HoverButton from "@/ui/hover-button";
+import GlowingButton from "@/ibovs/ui/glow-border-button";
+import HoverButton from "@/ibovs/ui/hover-button";
 import { motion } from "motion/react";
 import { StarsBackground } from "@/components/animation/stars";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/shared/toggles/themeToggle";
 function InteractiveHero() {
   const { resolvedTheme } = useTheme();
   return (

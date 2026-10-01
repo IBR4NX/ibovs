@@ -8,7 +8,7 @@ import { findUserById, updateUser } from '@/controllers/repositories/user.reposi
 import { getVerifiedPayload } from '@/lib/auth';
 export const myProyfile = cache(async () => {
   const session = await getVerifiedPayload();
-  const data = await findUserById(session?.id)
+  const data = await findUserById(session?._id)
   if (data) {
     const user = {
       name: data.name,
@@ -35,7 +35,7 @@ export async function updateProfile(state: FormState, formData: FormData): Promi
     email: formData.get('email'),
     username: formData.get('username')
   }
-  const userup = await updateUser(session?.id, dataUser)
+  const userup = await updateUser(session?._id, dataUser)
   if (!userup) {
     return {
       success: false,
@@ -51,7 +51,7 @@ export async function updateAvatar(state: FormState, formData: FormData) {
   console.log(avatar)
   if (avatar.size) {
     console.log("noooooooooo", avatar.name)
-    const fileName = `${session?.id}`;
+    const fileName = `${session?._id}`;
     const { data: uploadData, error } = await supabase.storage
       .from("Ibovs")
       .upload(fileName, avatar, {
@@ -61,7 +61,7 @@ export async function updateAvatar(state: FormState, formData: FormData) {
     const { data } = supabase.storage
       .from("Ibovs")
       .getPublicUrl(fileName);
-    const userup = await updateUser(session?.id, { avatar: data.publicUrl })
+    const userup = await updateUser(session?._id, { avatar: data.publicUrl })
     if (!userup) {
       return {
         success: false,

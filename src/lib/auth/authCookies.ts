@@ -1,10 +1,8 @@
 import { SignJWT, jwtVerify, JWTPayload } from 'jose';
 import { cookies } from 'next/headers';
 import { JWT_REFRESH_SECRET,JWT_ACCESS_SECRET,ACCESS_TOKEN_VALIDITY_SECRET,REFRESH_TOKEN_VALIDITY_SECRET , NODE_ENV } from '@/lib/envConfig';
-import { TokenConfig, JWTIbovs, IUser } from './interface';
+import { TokenConfig, JWTIbovs, TUser } from './interface';
 import { colors } from "@/utils/colors";
-
-export type MergedJWTPayload = JWTIbovs & JWTPayload;
 
 export const defaultTokens: TokenConfig[] = [
   { name: 'access', type: 'access', maxAgeSeconds: parseInt(ACCESS_TOKEN_VALIDITY_SECRET) },
@@ -17,7 +15,8 @@ const encodedKeyRefresh = new TextEncoder().encode(JWT_REFRESH_SECRET);
 /**
  * signToken
  */
-async function signToken( payload: Record<string, any>, config: TokenConfig=defaultTokens[0]): Promise<string> {
+
+export async function signToken( payload: JWTIbovs, config: TokenConfig=defaultTokens[0]): Promise<string> {
 
   const key = config.type === 'refresh' ? encodedKeyRefresh : encodedKey;
   const expiresAt = new Date(Date.now() + config.maxAgeSeconds * 1000);
@@ -45,11 +44,12 @@ export async function verifyToken(
   try {
     const { payload } = await jwtVerify(token, key);
     return payload as unknown as JWTIbovs;
-  } catch (err) {
-    return { storeId: '', id: '', is: false }; 
+  } catch (e :unknown) {
+    return { storeId: '', _id: '', is: false }; 
     // throw new Error(`Token verification failed: ${err}`);
   }
 }
+
 
 
 /**
@@ -58,11 +58,11 @@ export async function verifyToken(
  * @param tokensConfig - Token definitions to set (defaults to defaultTokens).
  * @returns A success message object.
  */
-export async function setAuthCookies(user: IUser, tokensConfig: TokenConfig[] = defaultTokens) 
+export async function setAuthCookies(user: TUser, tokensConfig: TokenConfig[] = defaultTokens) 
 {
-  const payload: any = { id: user.id ?? user._id.toString(), role: user.role };
+  const payload: JWTIbovs = { _id: user._id.toString(), role: user.role??""  }; // first store only
 
-  if (Array.isArray(user.storeId) && user.storeId.length > 0) {
+  if (user.storeId) {
     payload.storeId = user.storeId[0].toString(); // first store only
   }
   const cookieStore = await cookies();
@@ -118,14 +118,14 @@ export async function getCookie(name: string = 'access'): Promise<string | null>
  */
 export async function getVerifiedPayload(name: string = 'access'): Promise<JWTIbovs> {
   const token = await getCookie(name);
-
+  
   if (!token) {
     console.log({ token, message: `no ${name} token found in cookies` });
-    return { storeId: '', id: '', is: false }; // Return an empty payload if no token is found
+    return { storeId: '', _id: '', is: false }; // Return an empty payload if no token is found
   }
 
   const payload = await verifyToken(token, name);
-  console.log(colors.green('token :'), payload?.id, ' ', payload?.role);
+  console.log(colors.green('token :'), payload?._id, ' ', payload?.role);
 
   return payload;
 }

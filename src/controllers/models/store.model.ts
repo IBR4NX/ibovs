@@ -3,7 +3,6 @@ import mongoose, {Types, Document} from 'mongoose';
 import { Status } from './emun';
 //    Name
 export interface IStore {
-  id?:string;
   owner: Types.ObjectId;
   name?: string;
   slug: string;
@@ -62,7 +61,7 @@ schema.set("toJSON", {
 schema.set("toObject", {
   transform: function (_, ret) {
     const { _id,createdAt, updatedAt, ...object }= ret
-    object.id = _id.toString();
+    // object._id = _id.toString();
     // console.log(object);
     return object;
   },

@@ -22,8 +22,9 @@ export async function getUDFLvlOne(user:IUser) {
 export async function getStoreAndProfile(){
   const session= await verifyAuthUser();
   const sessionStore= await verifyAuthStore();
+  if(!session.is)redirect('/');
   console.log(session)
-  const store= await findStoreByOwner(session.id)
+  const store= await findStoreByOwner(session._id)
   if(!store)redirect('/')
   if(session?.role==="user")redirect('/')
   return {data:
