@@ -38,7 +38,6 @@ export async function verifyTokenUser(req: Request) {
 * @returns An object with `isActiv` and the redirect `path` when unauthenticated.
 */
 export async function verifyAuthState(path: string="/"): Promise<AuthState> {
-    console.log(colors.bgWhite('  '), colors.green(' start → getAuthState'));
     // console.log(colors.bgWhite('  '), colors.green(' path → '), path);
     const { access, refresh } = await getAuthCookies();
     if (!access) {

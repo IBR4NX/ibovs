@@ -21,33 +21,36 @@ export default async function proxy(req: NextRequest) {
     const ip = req.headers.get('x-forwarded-for') || 'unknown';
     log(colors.bgMagenta("   "));
     log(colors.bgMagenta(new Date(Date.now()).toLocaleTimeString()), colors.bold('proxy start'), '→', path, ip);
+console.log(
+    '[PROXY]',
 
+);
     const isProtectedRoute = matchesRoute(path, PROTECTED_ROUTES);
     const isPublicRoute = matchesRoute(path, PUBLIC_ROUTES);
 
     const auth = await verifyAuthState(path);  
-    console.log(colors.bgWhite('  '), colors.green(' auth state → '), auth);  
-    if (!auth.is) {
-        log(colors.red('auth failed'), '→', auth);
-    return NextResponse.next();
-    }
-    log('auth:', auth ? { id: auth._id, role: auth.role, expiresAt: auth.expiresAt } : null);
-    log('flags:', { path, isProtectedRoute, isPublicRoute });
+    console.log(colors.bgRed('  '), colors.green(' proxy state → '),req.method, req.nextUrl.pathname, req.nextUrl.search);  
+    if (auth.is) {
+       await log(colors.red('auth failed'), '→', auth);
+    // return NextResponse.next();
+    console.log('auth:', auth ? { id: auth._id, role: auth.role, expiresAt: auth.expiresAt } : null);
+    console.log('flags:', { path, isProtectedRoute, isPublicRoute });
+}
 
     // --- المسارات العامة (login/register/signup) ---
-    if (isPublicRoute) {
+    if (isPublicRoute && auth?.is) {
         if (!auth?._id) return NextResponse.next();
         // المستخدم مسجل بالفعل → لا داعي لصفحات الدخول
         return NextResponse.redirect(new URL('/', req.nextUrl));
     }
 
     // --- المسارات المحمية ---
-    if (isProtectedRoute && !auth?._id) {
+    if (isProtectedRoute && auth?.is && !auth?._id) {
         return NextResponse.redirect(new URL('/login', req.nextUrl));
     }
 
     // --- admin فقط ---
-    if (path.startsWith('/admin') && auth?._id !== ADMIN_ID) {
+    if (path.startsWith('/admin')&& auth?.is && auth?._id !== ADMIN_ID) {
         return NextResponse.redirect(new URL('/', req.nextUrl));
     }
 
