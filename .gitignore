@@ -12,7 +12,8 @@
 
 # testing
 /coverage
-/public/zip
+/public/zip/
+/public/zip/*.zip
 *.zip
 # next.js
 /.next/
