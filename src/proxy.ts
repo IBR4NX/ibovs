@@ -21,10 +21,6 @@ export default async function proxy(req: NextRequest) {
     const ip = req.headers.get('x-forwarded-for') || 'unknown';
     log(colors.bgMagenta("   "));
     log(colors.bgMagenta(new Date(Date.now()).toLocaleTimeString()), colors.bold('proxy start'), '→', path, ip);
-console.log(
-    '[PROXY]',
-
-);
     const isProtectedRoute = matchesRoute(path, PROTECTED_ROUTES);
     const isPublicRoute = matchesRoute(path, PUBLIC_ROUTES);
 
