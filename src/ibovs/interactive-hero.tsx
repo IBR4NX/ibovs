@@ -10,6 +10,8 @@ import fonts from '@/components/styles/fonts';
 import { ThemeToggle } from '@/comp/shared/toggles/themeToggle';
 import { useState, useEffect } from 'react';
 import cn from '@cn';
+import { ColorToggle, ModeToggle } from "@/components/shared/toggles/themeToggle";
+
 function InteractiveHero() {
 	const [loading, setLoading] = useState(true);
 	const { resolvedTheme } = useTheme();
@@ -21,6 +23,10 @@ function InteractiveHero() {
 	//console.log(resolvedTheme);
 	return (
 		<>
+			<div className=' flex gap-2 absolute z-50 top-4 left-4'>
+				<ColorToggle />
+				<ModeToggle />
+			</div>
 			<StarsBackground
 				starColor={resolvedTheme === 'dark' ? '#FFF' : '#000'}
 				className={'absolute inset-0 flex items-center justify-center rounded-xl -z-10 bg-none '}
@@ -61,16 +67,8 @@ function InteractiveHero() {
 					<div className='mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 pointer-events-auto'>
 						<GlowingButton>استكشف المتاجر القريبة منك</GlowingButton>
 
-						<div>
-							<Link href='dashboard'>
-								<HoverButton className=' w-full'>إدارة المتجر</HoverButton>
-							</Link>
-							<Link href='register'>
-								<HoverButton className=' w-full'>ابدأ متجرك مجاناً</HoverButton>
-							</Link>
-						</div>
 
-						<div className='flex w-full shrink-0  justify-center mx-auto'>
+						<div className='flex w-full shrink-0 gap-4 justify-center mx-auto'>
 							<Link href='login'>
 								<GlowingButton>login</GlowingButton>
 							</Link>
@@ -78,11 +76,14 @@ function InteractiveHero() {
 								<GlowingButton>signup</GlowingButton>
 							</Link>
 						</div>
-						<div className=' absolute z-50 top-2 left-2'>
-							<ThemeToggle />
-						</div>
+
 					</div>
 				</motion.div>
+				<div className='absolute bottom-4 text-center text-sm text-muted-foreground'>
+					<p className='text-center text-sm text-muted-foreground'>
+						© 2024 Ibrahim Dabwan . All rights reserved.
+					</p>
+				</div>
 			</div>
 		</>
 	);

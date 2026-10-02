@@ -26,7 +26,7 @@ const GlowingButton = ({
       {/* "glowing-border-button group relative h-[60px] px-4 cursor-pointer border-0 bg-transparent p-0 text-[20px] font-bold", */}
       <div
         className={cn(
-          "relative h-full w-full overflow-hidden rounded-[18px] p-[2px] transition-all duration-300 ease-in-out",
+          "relative h-full w-full overflow-hidden rounded-[18px] p-[1px] transition-all duration-300 ease-in-out",
           " "
         )}
       >
@@ -45,7 +45,7 @@ const GlowingButton = ({
         {/* Inner Content */}
         <div
           className={cn(
-            "content bg-foreground  relative z-10 flex h-full w-full items-center justify-center gap-2 rounded-[16px] transition-all duration-300 ease-in-out  px-11"
+            "content bg-background text-foreground  relative z-10 flex h-full w-full items-center justify-center gap-2 rounded-[16px] transition-all duration-300 ease-in-out  px-11"
           )}
         >
           <span className="  transition-colors duration-300">

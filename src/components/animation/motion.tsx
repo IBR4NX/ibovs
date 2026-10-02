@@ -22,18 +22,17 @@ export default function Motion({ constraintsRef }: { constraintsRef: React.RefOb
     const crossPathA = useTransform(x, [-10, -55], [0, 1]);
     const crossPathB = useTransform(x, [-50, -100], [0, 1]);
     const rounded = useTransform(count, Math.round);
-console.log(constraintsRef);
     return (
         <motion.div
-            className='icon-container'
+            className='icon-container fixed z-50 bottom-0 left-0 flex items-center justify-center rounded-lg'
             style={{ ...box, x }}
             drag
             dragConstraints={constraintsRef}   // ✅ يستقبلها من الأب
-            dragElastic={0.8}
+            dragElastic={0.2}
             dragMomentum={true}
-            whileDrag={{ scale: 1.05 }}
+            whileDrag={{ scale: 1.5 }}
         >
-            <motion.div className='icon-content' style={{ background, color }}>
+            <motion.div className='icon-content' style={{  color }}>
             <motion.pre>{rounded}</motion.pre>
             <svg className='progress-icon' viewBox='0 0 50 50'>
                 <motion.path

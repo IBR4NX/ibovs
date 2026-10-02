@@ -44,8 +44,9 @@ export default function Layout({
 				</Sidebar>
 			<div
 			ref={constraintsRef}
-			className=" fixed bg-muted/50 items-center justify-center p-2 p-8 w-full h-full overflow-hidden scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-400/20 scrollbar-track-gray-400/10">
+			className=" fixed bg-muted/50 items-center justify-center none p-2 p-8 w-full h-full overflow-hidden scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-400/20 scrollbar-track-gray-400/10">
 				{constraintsRef && <Motion constraintsRef={constraintsRef} />}
+			{children}
 			</div>
 		</SidebarProvider>
 		</>

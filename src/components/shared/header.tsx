@@ -43,7 +43,7 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
 			>
 				<SideTrigger />
 				{children}
-				<div className="mr-auto flex gap-1 items-center ">
+				<div className="mr-auto flex gap-2 x1items-center ">
 					<ColorToggle />
 					<ModeToggle />
 				</div>
