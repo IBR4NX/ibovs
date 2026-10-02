@@ -1,5 +1,5 @@
-import { type MotionProps, type Easing } from "motion/react";
-
+import { type MotionProps, type Easing,motion } from "motion/react";
+export { motion };
 export type SlideDirection = "left" | "right" | "up" | "down";
 
 export interface UseSlideInOptions {

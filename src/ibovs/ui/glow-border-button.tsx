@@ -26,7 +26,7 @@ const GlowingButton = ({
       {/* "glowing-border-button group relative h-[60px] px-4 cursor-pointer border-0 bg-transparent p-0 text-[20px] font-bold", */}
       <div
         className={cn(
-          "relative h-full w-full overflow-hidden rounded-[18px] p-[1px] transition-all duration-300 ease-in-out",
+          "relative h-full w-full overflow-hidden rounded-[18px] p-[1px] cursor-poiter transition-all duration-300 ease-in-out",
           " "
         )}
       >

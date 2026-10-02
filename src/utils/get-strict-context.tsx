@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-function getStrictContext<T>(
+export function getStrictContext<T>(
   name?: string,
 ): readonly [
   ({
@@ -33,4 +33,3 @@ function getStrictContext<T>(
   return [Provider, useSafeContext] as const;
 }
 
-export { getStrictContext };

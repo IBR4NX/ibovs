@@ -4,6 +4,7 @@ import React from "react";
 import { ColorToggle, ModeToggle } from "./toggles/themeToggle";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import SideTrigger from "./toggles/side-trigger";
+import { Link } from "lucide-react";
 export function Header({ children, className }: React.ComponentProps<"div">) {
 	const [isTop, setIsTop] = React.useState(true);
 	const { scrollY, scrollYProgress } = useScroll();
@@ -42,6 +43,12 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
 				//{...props}
 			>
 				<SideTrigger />
+				<h2 className="text-lg font-semibold tracking-tight">
+				<Link href='/' >
+					IBOVS
+
+				</Link>
+				</h2>
 				{children}
 				<div className="mr-auto flex gap-2 x1items-center ">
 					<ColorToggle />
@@ -54,7 +61,7 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
 						bottom: -1,
 						left: 0,
 						right: 0,
-						height: 2,
+						height: 1,
 						originX: 0,
 					}}
 					className={cn(" absolute bg-primary z-10 ")}

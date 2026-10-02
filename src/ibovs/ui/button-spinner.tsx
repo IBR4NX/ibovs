@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui";
 import { Spinner } from "@/components/ui/spinner";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shadcn/utils";
 interface Props {
   children: React.ReactNode;
   pending: boolean;
